@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
@@ -23,59 +24,38 @@ import java.util.List;
 public class Jokes {
 
     @Id
-      /*      @SequenceGenerator(
-                    name = "jokes_sequence",
-                    sequenceName = "jokes_sequence",
-                    allocationSize = 1
-            )
-            @GeneratedValue(
-                    strategy = GenerationType.SEQUENCE,
-                    generator = "jokes_sequence"
-            )*/
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long jokeId;
+    @Column(name = "id")
+    private Long id;
 
-    @Column(name = "joke_description")
-    @JsonProperty(value = "joke")
-    String jokeDescription;
+    @Column(name = "joke")
+    private String joke;
 
-    @OneToOne(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(
-            name = "jokes_type_id",
-            referencedColumnName = "jokeTypeId"
-    )
-    @JsonProperty(value = "lang")
-    private JokeType jokeType;
+    @Column(name = "setup")
+    private String setup;
 
-    @OneToOne(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY
-    )
-    @JoinColumn(
-            name = "joke_category_id",
-            referencedColumnName = "jokeCategoryId"
-    )
-    @JsonProperty(value = "category")
-    private JokeCategory jokeCategory;
+    @Column(name = "delivery")
+    private String delivery;
 
+    @Column(name = "type")
+    private String type;
 
-    @ManyToMany()
-    @JoinTable(name = "client_map",
-            joinColumns =@JoinColumn(
-                    name = "joke_id",
-                    referencedColumnName = "jokeId"
-            ),
-            inverseJoinColumns =@JoinColumn(
-                    name = "client_id",
-                    referencedColumnName = "clientId"
-            )
+    @Column(name = "category")
+    private String category;
 
-    )
-    private List<Client> clientList;
+    @Column(name = "safe")
+    private boolean safe;
 
+    @Column(name = "lang")
+    private String lang;
 
+    public Jokes(Jokes joke) {
+        this.setup = joke.getSetup();
+        this.delivery = joke.getDelivery();
+        this.type = joke.getType();
+        this.category = joke.getCategory();
+        this.safe = joke.isSafe();
+        this.lang = joke.getLang();
+        this.joke = joke.getJoke();
+    }
 }

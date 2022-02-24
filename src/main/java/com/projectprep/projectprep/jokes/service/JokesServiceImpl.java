@@ -9,9 +9,11 @@ import java.util.List;
 
 @Service
 public class JokesServiceImpl implements JokesService{
+    JokesRepository jokesRepository;
 
-    @Autowired
-    private JokesRepository jokesRepository;
+    public JokesServiceImpl(JokesRepository jokesRepository) {
+        this.jokesRepository = jokesRepository;
+    }
 
     @Override
     public Jokes save(List<Jokes> jokes) {
